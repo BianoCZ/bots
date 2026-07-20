@@ -1,0 +1,36 @@
+{
+  "organization": "Biano",
+  "documentation": "https://github.com/BianoCZ/bots",
+  "contact": "it@biano.com",
+  "updated": "2026-07-20",
+  "prefixes": [
+    {
+      "ip": "213.109.164.128/32",
+      "description": "Primary crawler"
+    },
+    {
+      "ip": "213.109.164.129/32",
+      "description": "Primary crawler"
+    },
+    {
+      "ip": "213.109.164.226/32",
+      "description": "Secondary fetcher"
+    },
+    {
+      "ip": "213.109.164.227/32",
+      "description": "Secondary fetcher"
+    },
+    {
+      "ip": "213.109.164.84/32",
+      "description": "General traffic"
+    },
+    {
+      "ip": "213.109.164.85/32",
+      "description": "General traffic"
+    },
+    {
+      "ip": "213.109.164.86/32",
+      "description": "General traffic"
+    }
+  ]
+}
