@@ -61,6 +61,19 @@ Monitors registered eshop URLs to detect availability issues.
 
 ---
 
+### Platform Detector
+
+Identifies which e-commerce platform a registered eshop runs on.
+
+| Field          | Value                                                                                                                                              |
+|----------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
+| **User-Agent** | `BianoBot-PlatformDetector/1.0 (+https://github.com/BianoCZ/bots#platform-detector)`                                                               |
+| **Purpose**    | Sends a single HTTP GET to an eshop's homepage and scans the returned HTML for markers of known e-commerce platforms. Does not store page content. |
+| **Access**     | Direct — operated by Biano                                                                                                                         |
+| **IP Ranges**  | [ips.json](https://raw.githubusercontent.com/BianoCZ/bots/main/ips.json)                                                                           |
+
+---
+
 ### GTM Checker
 
 Verifies that Biano's tracking tag is correctly injected on a registered eshop's site.
