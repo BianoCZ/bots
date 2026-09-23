@@ -61,6 +61,19 @@ Monitors registered eshop URLs to detect availability issues.
 
 ---
 
+### Platform Detector
+
+Identifies which e-commerce platform a registered eshop runs on.
+
+| Field          | Value                                                                                                                                              |
+|----------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
+| **User-Agent** | `BianoBot-PlatformDetector/1.0 (+https://github.com/BianoCZ/bots#platform-detector)`                                                               |
+| **Purpose**    | Sends a single HTTP GET to an eshop's homepage and scans the returned HTML for markers of known e-commerce platforms. Does not store page content. |
+| **Access**     | Direct — operated by Biano                                                                                                                         |
+| **IP Ranges**  | [ips.json](https://raw.githubusercontent.com/BianoCZ/bots/main/ips.json)                                                                           |
+
+---
+
 ### GTM Checker
 
 Verifies that Biano's tracking tag is correctly injected on a registered eshop's site.
@@ -87,6 +100,19 @@ Signs up to a registered eshop's own newsletter on Biano's behalf.
 
 ---
 
+### Newsletter Reader
+
+Reads the newsletters an eshop sends, to pick up the promotions they announce.
+
+| Field          | Value                                                                                                                                                   |
+|----------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **User-Agent** | `BianoBot-NewsletterReader/1.0 (+https://github.com/BianoCZ/bots#newsletter-reader)`                                                                    |
+| **Purpose**    | Sends a single HTTP GET for a received newsletter's web version, and for PDF catalogues it links to, to extract promotion details and the links in them. |
+| **Access**     | Direct — operated by Biano                                                                                                                              |
+| **IP Ranges**  | [ips.json](https://raw.githubusercontent.com/BianoCZ/bots/main/ips.json)                                                                                |
+
+---
+
 ## Robots.txt Compliance
 
 All bots respect `robots.txt` directives. To block any of our bots, add the following to your `robots.txt`:
@@ -97,7 +123,9 @@ User-agent: BianoBot-FeedFetcher
 User-agent: BianoBot-ImageFetcher
 User-agent: BianoBot-RedirectResolver
 User-agent: BianoBot-NewsletterSubscriber
+User-agent: BianoBot-NewsletterReader
 User-agent: BianoBot-GtmChecker
+User-agent: BianoBot-PlatformDetector
 Disallow: /
 ```
 
