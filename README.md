@@ -1,7 +1,9 @@
 # BIANO Bots
 
 This page documents the automated bots operated by **Biano** ([biano.com](https://www.biano.com)).
-All bots are transparent about their identity and purpose, and comply with `robots.txt`.
+All bots are transparent about their identity and purpose, and comply with `robots.txt` when they crawl.
+A URL handed to us to fetch is not crawled: a product feed an eshop registered with Biano ([Feed Fetcher](#feed-fetcher)), the product
+images that feed lists ([Image Fetcher](#image-fetcher)).
 
 For questions or to report issues, contact: [it@biano.com](mailto:it@biano.com)
 
@@ -18,6 +20,7 @@ Downloads XML product feeds from registered eshops.
 | **User-Agent** | `BianoBot-FeedFetcher/1.0 (+https://github.com/BianoCZ/bots#feed-fetcher)`                                                                                          |
 | **Purpose**    | Fetches XML product feed files over HTTP GET for product catalogue synchronization, using a content hash to skip unchanged feeds. Does not store any personal data. |
 | **Access**     | Direct — operated by Biano                                                                                                                                          |
+| **Robots.txt** | Not consulted. It fetches only the feed URL the eshop registered with Biano, so a disallow written for crawlers does not stop it.                                   |
 | **IP Ranges**  | [ips.json](https://raw.githubusercontent.com/BianoCZ/bots/main/ips.json)                                                                                            |
 
 ---
@@ -31,20 +34,22 @@ Downloads product images from registered eshops.
 | **User-Agent** | `BianoBot-ImageFetcher/1.0 (+https://github.com/BianoCZ/bots#image-fetcher)`                                                                                 |
 | **Purpose**    | Downloads product images (in parallel, throttled per domain and honoring HTTP 429 rate limits) for display on marketplace. Does not store any personal data. |
 | **Access**     | Direct — operated by Biano                                                                                                                                   |
+| **Robots.txt** | Not consulted. It downloads only the image URLs an eshop lists in the feed it registered with Biano.                                                         |
 | **IP Ranges**  | [ips.json](https://raw.githubusercontent.com/BianoCZ/bots/main/ips.json)                                                                                     |
 
 ---
 
 ### Redirect Resolver
 
-Resolves the final destination of promotional, affiliate, and review-source links.
+Resolves the final destination of promotional and affiliate links.
 
-| Field          | Value                                                                                                                                                                                                 |
-|----------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **User-Agent** | `BianoBot-RedirectResolver/1.0 (+https://github.com/BianoCZ/bots#redirect-resolver)`                                                                                                                  |
-| **Purpose**    | Sends HTTP HEAD requests to follow redirect chains and determine a link's final URL, before using that URL elsewhere (e.g. showing a promotion, or fetching reviews). Does not download page content. |
-| **Access**     | Direct — operated by Biano                                                                                                                                                                            |
-| **IP Ranges**  | [ips.json](https://raw.githubusercontent.com/BianoCZ/bots/main/ips.json)                                                                                                                              |
+| Field          | Value                                                                                                                                                                            |
+|----------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **User-Agent** | `BianoBot-RedirectResolver/1.0 (+https://github.com/BianoCZ/bots#redirect-resolver)`                                                                                             |
+| **Purpose**    | Sends HTTP HEAD requests to follow redirect chains and determine a link's final URL, before using that URL elsewhere (e.g. showing a promotion). Does not download page content. |
+| **Access**     | Direct — operated by Biano                                                                                                                                                       |
+| **Robots.txt** | Not consulted. It follows a single link it was given, once, the way a visitor clicking it would — it does not crawl.                                                             |
+| **IP Ranges**  | [ips.json](https://raw.githubusercontent.com/BianoCZ/bots/main/ips.json)                                                                                                         |
 
 ---
 
@@ -57,6 +62,7 @@ Monitors registered eshop URLs to detect availability issues.
 | **User-Agent** | `BianoBot-EshopChecker/1.0 (+https://github.com/BianoCZ/bots#eshop-checker)`                                                                                                                           |
 | **Purpose**    | Sends HTTP GET requests to an eshop's homepage plus a small random sample of its product URLs to verify they return HTTP 200. Flags the eshop only if most requests fail. Does not store page content. |
 | **Access**     | Direct — operated by Biano                                                                                                                                                                             |
+| **Robots.txt** | Respected. A URL it may not fetch is skipped, never counted as a failure.                                                                                                                              |
 | **IP Ranges**  | [ips.json](https://raw.githubusercontent.com/BianoCZ/bots/main/ips.json)                                                                                                                               |
 
 ---
@@ -70,6 +76,7 @@ Identifies which e-commerce platform a registered eshop runs on.
 | **User-Agent** | `BianoBot-PlatformDetector/1.0 (+https://github.com/BianoCZ/bots#platform-detector)`                                                               |
 | **Purpose**    | Sends a single HTTP GET to an eshop's homepage and scans the returned HTML for markers of known e-commerce platforms. Does not store page content. |
 | **Access**     | Direct — operated by Biano                                                                                                                         |
+| **Robots.txt** | Respected. If your homepage is disallowed, it is not fetched.                                                                                      |
 | **IP Ranges**  | [ips.json](https://raw.githubusercontent.com/BianoCZ/bots/main/ips.json)                                                                           |
 
 ---
@@ -78,25 +85,13 @@ Identifies which e-commerce platform a registered eshop runs on.
 
 Verifies that Biano's tracking tag is correctly injected on a registered eshop's site.
 
-| Field          | Value                                                                                                                                              |
+| Field          | Value                                                                                                                                            |
 |----------------|--------------------------------------------------------------------------------------------------------------------------------------------------|
-| **User-Agent** | `BianoBot-GtmChecker/1.0 (+https://github.com/BianoCZ/bots#gtm-checker)`                                                                          |
+| **User-Agent** | `BianoBot-GtmChecker/1.0 (+https://github.com/BianoCZ/bots#gtm-checker)`                                                                         |
 | **Purpose**    | Drives a headless browser to an eshop's site to confirm the shared Biano GTM container fires correctly inside the eshop's own tag manager setup. |
-| **Access**     | Direct — operated by Biano                                                                                                                        |
-| **IP Ranges**  | [ips.json](https://raw.githubusercontent.com/BianoCZ/bots/main/ips.json)                                                                          |
-
----
-
-### Newsletter Subscriber
-
-Signs up to a registered eshop's own newsletter on Biano's behalf.
-
-| Field          | Value                                                                                                                                           |
-|----------------|-------------------------------------------------------------------------------------------------------------------------------------------------|
-| **User-Agent** | `BianoBot-NewsletterSubscriber/1.0 (+https://github.com/BianoCZ/bots#newsletter-subscriber)`                                                    |
-| **Purpose**    | Uses a headless browser to locate and complete an eshop's newsletter opt-in form, falling back to its account registration form if none exists. |
-| **Access**     | Direct — operated by Biano                                                                                                                      |
-| **IP Ranges**  | [ips.json](https://raw.githubusercontent.com/BianoCZ/bots/main/ips.json)                                                                        |
+| **Access**     | Direct — operated by Biano                                                                                                                       |
+| **Robots.txt** | Respected on scheduled checks. A check you start yourself from your eshop administration at Biano loads your homepage regardless.                |
+| **IP Ranges**  | [ips.json](https://raw.githubusercontent.com/BianoCZ/bots/main/ips.json)                                                                         |
 
 ---
 
@@ -104,30 +99,33 @@ Signs up to a registered eshop's own newsletter on Biano's behalf.
 
 Reads the newsletters an eshop sends, to pick up the promotions they announce.
 
-| Field          | Value                                                                                                                                                   |
-|----------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **User-Agent** | `BianoBot-NewsletterReader/1.0 (+https://github.com/BianoCZ/bots#newsletter-reader)`                                                                    |
+| Field          | Value                                                                                                                                                    |
+|----------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **User-Agent** | `BianoBot-NewsletterReader/1.0 (+https://github.com/BianoCZ/bots#newsletter-reader)`                                                                     |
 | **Purpose**    | Sends a single HTTP GET for a received newsletter's web version, and for PDF catalogues it links to, to extract promotion details and the links in them. |
-| **Access**     | Direct — operated by Biano                                                                                                                              |
-| **IP Ranges**  | [ips.json](https://raw.githubusercontent.com/BianoCZ/bots/main/ips.json)                                                                                |
+| **Access**     | Direct — operated by Biano                                                                                                                               |
+| **Robots.txt** | Respected.                                                                                                                                               |
+| **IP Ranges**  | [ips.json](https://raw.githubusercontent.com/BianoCZ/bots/main/ips.json)                                                                                 |
 
 ---
 
 ## Robots.txt Compliance
 
-All bots respect `robots.txt` directives. To block any of our bots, add the following to your `robots.txt`:
+All bots respect `robots.txt` directives when they crawl. To block any of our bots, add the following to your `robots.txt`:
 
 ```
 User-agent: BianoBot-EshopChecker
 User-agent: BianoBot-FeedFetcher
 User-agent: BianoBot-ImageFetcher
 User-agent: BianoBot-RedirectResolver
-User-agent: BianoBot-NewsletterSubscriber
 User-agent: BianoBot-NewsletterReader
 User-agent: BianoBot-GtmChecker
 User-agent: BianoBot-PlatformDetector
 Disallow: /
 ```
+
+This does not stop Feed Fetcher from downloading a feed you registered with Biano, nor Image Fetcher from downloading the images it
+lists — you asked us for those files, so remove the feed where you registered it, or contact us.
 
 ---
 
